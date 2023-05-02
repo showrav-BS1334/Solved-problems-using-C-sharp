@@ -135,6 +135,7 @@ namespace CP
             ans %= mod;
             return ans;
         }
+
         long FindGCD(long x, long y)
         {
             if (x % y == 0) return y;
@@ -222,20 +223,17 @@ namespace CP
 
         public void Solve()
         {
-            long n = ScanLongList()[0];
-            long ans = 0;
-            if (n < 10)
-            {
-                ans = n;
-            }
-            else
-            {
-                // 400 er jnno 4 ta + 100 er moddhe 18 ta
-                long d = CountDigits(n);
-                ans += n / Power(10, d - 1);
-                ans += (d - 1) * 9;
-            }
-            Console.WriteLine(ans);
+            List<long> list = ScanLongList();
+            long a = list[0], b = list[1], c = list[2];
+
+            long x = a - 1;
+            long y = Math.Abs(b - c) + c - 1;
+
+            if (x == y) Console.Write(3);
+            else if (x > y) Console.Write(2);
+            else Console.Write(1);
+
+            Console.WriteLine();
         }
 
         // ------------------------------------------------------------------------

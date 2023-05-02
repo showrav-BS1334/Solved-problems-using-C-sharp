@@ -57,11 +57,6 @@ namespace CP
             return allDivisors;
         }
 
-        long FirstNSum(long n)
-        {
-            return n * (n + 1) / 2;
-        }
-
         /// sieve ---------------------------
         const int MAX = 10000005;
         int[] primes = new int[MAX];
@@ -135,24 +130,16 @@ namespace CP
             ans %= mod;
             return ans;
         }
+
         long FindGCD(long x, long y)
         {
             if (x % y == 0) return y;
             return FindGCD(y, x % y);
         }
 
-        string SortString(string input)
+        long FirstNSum(long n)
         {
-            char[] characters = input.ToArray();
-            Array.Sort(characters);
-            return new string(characters);
-        }
-
-        void SwapValue(ref long x, ref long y)
-        {
-            x = x ^ y;
-            y = x ^ y;
-            x = x ^ y;
+            return n * (n + 1) / 2;
         }
 
         long CountDigits(long x)
@@ -164,6 +151,27 @@ namespace CP
                 x /= 10;
             }
             return ans;
+        }
+
+        string SortString(string input)
+        {
+            char[] characters = input.ToArray();
+            Array.Sort(characters);
+            return new string(characters);
+        }
+
+        string ReverseString(string input)
+        {
+            char[] characters = input.ToArray();
+            Array.Reverse(characters);
+            return new string(characters);
+        }
+
+        void SwapValue(ref long x, ref long y)
+        {
+            x = x ^ y;
+            y = x ^ y;
+            x = x ^ y;
         }
 
         // ---------------------------
@@ -178,11 +186,11 @@ namespace CP
         {
             return N & ~(1 << pos); /// ~ means flip the bits
         }
-        long flipbit(long N, int pos)
+        long Flipbit(long N, int pos)
         {
             return N ^ (1L << pos);
         }
-        bool checkbit(long N, int pos)
+        bool Checkbit(long N, int pos)
         {
             long bit = N & (1L << pos);
             return bit == 0 ? false : true;
@@ -212,7 +220,6 @@ namespace CP
         /// something like fill/memset in c++, for initialize an n sized array/vector:
         /// List<int> a = Enumerable.Repeat(100, n).ToList();
 
-
         /// for flipping use ^ with 1
         /// For DP: state, transition, base, return, memorization
 
@@ -222,20 +229,33 @@ namespace CP
 
         public void Solve()
         {
-            long n = ScanLongList()[0];
-            long ans = 0;
-            if (n < 10)
+            string s = Console.ReadLine();
+            Console.Write(Math.Abs(s[0] - s.Last()) + " ");
+
+            char mx = s[0] > s.Last() ? s[0] : s.Last();
+            char mn = s[0] < s.Last() ? s[0] : s.Last();
+
+            List<(int, int)> v = new List<(int, int)>();
+            int x = 0;
+            for (int i = 1; i <= s.Length - 2; i++)
             {
-                ans = n;
+                if (s[i] >= mn && s[i] <= mx)
+                {
+                    x++;
+                    v.Add((s[i] - 'a', i));
+                }
             }
-            else
+            x += 2;
+            v.Sort();
+            if (s[0] > s.Last()) v.Reverse();
+
+            Console.WriteLine(x);
+            Console.Write(1 + " ");
+            foreach (var t in v)
             {
-                // 400 er jnno 4 ta + 100 er moddhe 18 ta
-                long d = CountDigits(n);
-                ans += n / Power(10, d - 1);
-                ans += (d - 1) * 9;
+                Console.Write((t.Item2 + 1) + " ");
             }
-            Console.WriteLine(ans);
+            Console.WriteLine(s.Length);
         }
 
         // ------------------------------------------------------------------------

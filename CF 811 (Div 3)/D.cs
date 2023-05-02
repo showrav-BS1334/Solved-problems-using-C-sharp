@@ -222,20 +222,59 @@ namespace CP
 
         public void Solve()
         {
+            string t = Console.ReadLine();
             long n = ScanLongList()[0];
-            long ans = 0;
-            if (n < 10)
+            List<String> strings = new List<String>();
+            for (int i = 0; i < n; i++)
             {
-                ans = n;
+                string s = Console.ReadLine();
+                strings.Add(s);
             }
-            else
+
+            List<(long, long)> ans = new List<(long, long)>();
+
+            int L = 0, R = 0;
+            while (true)
             {
-                // 400 er jnno 4 ta + 100 er moddhe 18 ta
-                long d = CountDigits(n);
-                ans += n / Power(10, d - 1);
-                ans += (d - 1) * 9;
+                long maxLast = R - 1;
+                long got = 0;
+                int starting = 0, indx = 0;
+
+                for (int i = L; i <= R; i++)
+                {
+                    for (int j = 0; j < n; j++)
+                    {
+                        string s = strings[j];
+                        long last = i + s.Length - 1;
+                        if (last < t.Length && t.Substring(i, s.Length) == s)
+                        {
+                            if (last > maxLast)
+                            {
+                                maxLast = last;
+                                starting = i;
+                                indx = j;
+                                got = 1;
+                            }
+                        }
+                    }
+                }
+                if (got == 0)
+                {
+                    Console.WriteLine(-1);
+                    return;
+                }
+
+                ans.Add((indx, starting));
+                L = starting + 1;
+                R = starting + strings[indx].Length;
+                if (R == t.Length) break;
             }
-            Console.WriteLine(ans);
+
+            Console.WriteLine(ans.Count);
+            foreach (var x in ans)
+            {
+                Console.WriteLine((x.Item1 + 1) + " " + (x.Item2 + 1));
+            }
         }
 
         // ------------------------------------------------------------------------

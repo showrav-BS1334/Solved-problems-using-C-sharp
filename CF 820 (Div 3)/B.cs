@@ -57,11 +57,6 @@ namespace CP
             return allDivisors;
         }
 
-        long FirstNSum(long n)
-        {
-            return n * (n + 1) / 2;
-        }
-
         /// sieve ---------------------------
         const int MAX = 10000005;
         int[] primes = new int[MAX];
@@ -135,24 +130,16 @@ namespace CP
             ans %= mod;
             return ans;
         }
+
         long FindGCD(long x, long y)
         {
             if (x % y == 0) return y;
             return FindGCD(y, x % y);
         }
 
-        string SortString(string input)
+        long FirstNSum(long n)
         {
-            char[] characters = input.ToArray();
-            Array.Sort(characters);
-            return new string(characters);
-        }
-
-        void SwapValue(ref long x, ref long y)
-        {
-            x = x ^ y;
-            y = x ^ y;
-            x = x ^ y;
+            return n * (n + 1) / 2;
         }
 
         long CountDigits(long x)
@@ -164,6 +151,27 @@ namespace CP
                 x /= 10;
             }
             return ans;
+        }
+
+        string SortString(string input)
+        {
+            char[] characters = input.ToArray();
+            Array.Sort(characters);
+            return new string(characters);
+        }
+
+        string ReverseString(string input)
+        {
+            char[] characters = input.ToArray();
+            Array.Reverse(characters);
+            return new string(characters);
+        }
+
+        void SwapValue(ref long x, ref long y)
+        {
+            x = x ^ y;
+            y = x ^ y;
+            x = x ^ y;
         }
 
         // ---------------------------
@@ -222,19 +230,26 @@ namespace CP
 
         public void Solve()
         {
-            long n = ScanLongList()[0];
-            long ans = 0;
-            if (n < 10)
+            int n = ScanIntList()[0];
+            string s = Console.ReadLine();
+            string ans = "";
+            for (int i = n - 1; i >= 0; i--)
             {
-                ans = n;
+                if (s[i] == '0')
+                {
+                    int tem = (s[i - 2] - '0') * 10 + (s[i - 1] - '0'); // that num
+                    int c = tem + 'a' - 1; // corresponding char
+                    ans += (char)c;
+                    i -= 2;
+                }
+                else
+                {
+                    int c = s[i] - '0';
+                    c += 'a' - 1;
+                    ans += (char)c;
+                }
             }
-            else
-            {
-                // 400 er jnno 4 ta + 100 er moddhe 18 ta
-                long d = CountDigits(n);
-                ans += n / Power(10, d - 1);
-                ans += (d - 1) * 9;
-            }
+            ans = ReverseString(ans);
             Console.WriteLine(ans);
         }
 

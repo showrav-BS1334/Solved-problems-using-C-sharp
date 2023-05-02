@@ -222,20 +222,24 @@ namespace CP
 
         public void Solve()
         {
-            long n = ScanLongList()[0];
-            long ans = 0;
-            if (n < 10)
+            int s = ScanIntList()[0];
+            int i = 9;
+            List<int> ans = new List<int>();
+            while (true)
             {
-                ans = n;
+                if (s <= i)
+                {
+                    ans.Add(s);
+                    break;
+                }
+                s -= i;
+                ans.Add(i);
+                i--;
             }
-            else
-            {
-                // 400 er jnno 4 ta + 100 er moddhe 18 ta
-                long d = CountDigits(n);
-                ans += n / Power(10, d - 1);
-                ans += (d - 1) * 9;
-            }
-            Console.WriteLine(ans);
+            ans.Reverse();
+
+            foreach (var x in ans) Console.Write(x);
+            Console.WriteLine();
         }
 
         // ------------------------------------------------------------------------

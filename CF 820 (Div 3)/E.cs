@@ -222,27 +222,35 @@ namespace CP
 
         public void Solve()
         {
-            long n = ScanLongList()[0];
-            long ans = 0;
-            if (n < 10)
+            long a, b;
+            for (int i = 2; i <= 26; i++)
             {
-                ans = n;
+                Console.WriteLine("? 1 " + i);
+                Console.Out.Flush();
+                a = ScanLongList()[0];
+
+                Console.WriteLine("? " + i + " 1");
+                Console.Out.Flush();
+                b = ScanLongList()[0];
+
+                if (a != b)
+                {
+                    Console.WriteLine("! " + (a + b));
+                    return;
+                }
+                else if (a == -1)
+                {
+                    Console.WriteLine("! " + (i - 1));
+                    return;
+                }
             }
-            else
-            {
-                // 400 er jnno 4 ta + 100 er moddhe 18 ta
-                long d = CountDigits(n);
-                ans += n / Power(10, d - 1);
-                ans += (d - 1) * 9;
-            }
-            Console.WriteLine(ans);
         }
 
         // ------------------------------------------------------------------------
         public void Init()
         {
             int testCase = 1;
-            testCase = Convert.ToInt32(Console.ReadLine());
+            // testCase = Convert.ToInt32(Console.ReadLine());
             for (int i = 1; i <= testCase; i++)
             {
                 //Console.Write("Case " + i + ": ");

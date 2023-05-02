@@ -222,20 +222,23 @@ namespace CP
 
         public void Solve()
         {
-            long n = ScanLongList()[0];
-            long ans = 0;
-            if (n < 10)
+            List<int> list = ScanIntList();
+            int n = list[0], h = list[1], m = list[2];
+            int ans = 1000000000;
+            for (int i = 0; i < n; i++)
             {
-                ans = n;
+                List<int> t = ScanIntList();
+                int H = t[0], M = t[1];
+                int x = H * 60 + M;
+                int y = h * 60 + m;
+                int diff = x - y;
+                if (diff < 0)
+                {
+                    diff += 1440; // + 24 hours
+                }
+                ans = Math.Min(diff, ans);
             }
-            else
-            {
-                // 400 er jnno 4 ta + 100 er moddhe 18 ta
-                long d = CountDigits(n);
-                ans += n / Power(10, d - 1);
-                ans += (d - 1) * 9;
-            }
-            Console.WriteLine(ans);
+            Console.WriteLine(ans / 60 + " " + ans % 60);
         }
 
         // ------------------------------------------------------------------------

@@ -222,19 +222,40 @@ namespace CP
 
         public void Solve()
         {
-            long n = ScanLongList()[0];
-            long ans = 0;
-            if (n < 10)
+            int n = ScanIntList()[0];
+            List<int> a = ScanIntList();
+            SortedDictionary<int, int> map = new SortedDictionary<int, int>();
+            foreach (var x in a)
             {
-                ans = n;
+                if (map.ContainsKey(x))
+                {
+                    map[x]++;
+                }
+                else map[x] = 1;
             }
-            else
+
+            int ans = 0;
+
+            for (int i = 0; i < n; i++)
             {
-                // 400 er jnno 4 ta + 100 er moddhe 18 ta
-                long d = CountDigits(n);
-                ans += n / Power(10, d - 1);
-                ans += (d - 1) * 9;
+                if (map.Count == n - i)
+                {
+                    ans = i;
+                    break;
+                }
+                else
+                {
+                    if (map.ContainsKey(a[i]))
+                    {
+                        map[a[i]]--;
+                        if (map[a[i]] == 0)
+                        {
+                            map.Remove(a[i]);
+                        }
+                    }
+                }
             }
+
             Console.WriteLine(ans);
         }
 

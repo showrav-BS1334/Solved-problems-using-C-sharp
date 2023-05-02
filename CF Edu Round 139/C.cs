@@ -5,7 +5,6 @@ using System.Text;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
-using System.Collections.Specialized;
 
 namespace CP
 {
@@ -155,17 +154,6 @@ namespace CP
             x = x ^ y;
         }
 
-        long CountDigits(long x)
-        {
-            long ans = 0;
-            while (x > 0)
-            {
-                ans++;
-                x /= 10;
-            }
-            return ans;
-        }
-
         // ---------------------------
         ///  bitmask related things
         /// pos is 0 based index and starts from left to right: [32 31 30 ... ... ... 3 2 1 0]
@@ -220,22 +208,66 @@ namespace CP
         const long N = 1000 * 1000;
         long mod = 1000 * 1000 * 1000 + 7;
 
-        public void Solve()
+        long n;
+        string a, b;
+        long[,,] dp = new long[2, N, 2];
+
+        long f(int r, int c, long prev)
         {
-            long n = ScanLongList()[0];
+            if (c == n - 1) return 1;
+
+            if (dp[r, c, prev] != -1) return dp[r, c, prev];
+
             long ans = 0;
-            if (n < 10)
+            if (r == 0)
             {
-                ans = n;
+                if (b[c] == 'B' && prev != 1) ans = f(1, c, 0);
+                else if (a[c + 1] == 'B') ans = f(r, c + 1, 0);
             }
             else
             {
-                // 400 er jnno 4 ta + 100 er moddhe 18 ta
-                long d = CountDigits(n);
-                ans += n / Power(10, d - 1);
-                ans += (d - 1) * 9;
+                if (a[c] == 'B' && prev != 0) ans = f(0, c, 1);
+                else if (b[c + 1] == 'B') ans = f(r, c + 1, 1);
             }
-            Console.WriteLine(ans);
+
+            return dp[r, c, prev] = ans;
+        }
+
+        public void Solve()
+        {
+            n = ScanLongList()[0];
+            a = Console.ReadLine();
+            b = Console.ReadLine();
+
+            long ok = 0;
+            for (int i = 0; i < 2; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    for (int k = 0; k < 2; k++)
+                    {
+                        dp[i, j, k] = -1;
+                    }
+                }
+            }
+
+            if (a[0] == 'B') ok |= (f(0, 0, 0));
+
+            for (int i = 0; i < 2; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    for (int k = 0; k < 2; k++)
+                    {
+                        dp[i, j, k] = -1;
+                    }
+                }
+            }
+
+            if (b[0] == 'B') ok |= f(1, 0, 1);
+
+            if (ok == 1) Yes();
+            else No();
         }
 
         // ------------------------------------------------------------------------

@@ -5,7 +5,6 @@ using System.Text;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
-using System.Collections.Specialized;
 
 namespace CP
 {
@@ -155,17 +154,6 @@ namespace CP
             x = x ^ y;
         }
 
-        long CountDigits(long x)
-        {
-            long ans = 0;
-            while (x > 0)
-            {
-                ans++;
-                x /= 10;
-            }
-            return ans;
-        }
-
         // ---------------------------
         ///  bitmask related things
         /// pos is 0 based index and starts from left to right: [32 31 30 ... ... ... 3 2 1 0]
@@ -223,19 +211,35 @@ namespace CP
         public void Solve()
         {
             long n = ScanLongList()[0];
-            long ans = 0;
-            if (n < 10)
+            string s = Console.ReadLine();
+
+            if (n == 1)
             {
-                ans = n;
+                No();
+                return;
             }
-            else
+
+            for (char c = 'a'; c <= 'z'; c++)
             {
-                // 400 er jnno 4 ta + 100 er moddhe 18 ta
-                long d = CountDigits(n);
-                ans += n / Power(10, d - 1);
-                ans += (d - 1) * 9;
+                for (char d = 'a'; d <= 'z'; d++)
+                {
+                    long match = 0;
+                    for (int i = 0; i < n - 1; i++)
+                    {
+                        if (s[i] == c && s[i + 1] == d)
+                        {
+                            i++;
+                            match++;
+                        }
+                    }
+                    if (match >= 2)
+                    {
+                        Yes();
+                        return;
+                    }
+                }
             }
-            Console.WriteLine(ans);
+            No();
         }
 
         // ------------------------------------------------------------------------
